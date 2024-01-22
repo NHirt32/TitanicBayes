@@ -12,19 +12,35 @@ naiveBayes = GaussianNB()
 
 # Dropping irrelevant column 'Name'
 trainingData.drop("Name", axis=1, inplace=True)
-
 # Normalizing Sex to 0(male) or 1(female)
 trainingData['Sex'] = trainingData['Sex'].map({'male': 0, 'female': 1})
 
+# Temp drop on categorical data
+trainingData.drop(['Ticket', 'Cabin', 'Embarked'], axis=1, inplace=True)
+trainingData.ffill(inplace=True)
+# Temp processing of test data
+testData.drop("Name", axis=1, inplace=True)
+testData['Sex'] = testData['Sex'].map({'male': 0, 'female': 1})
+testData.drop(['Ticket', 'Cabin', 'Embarked'], axis=1, inplace=True)
+testData.ffill(inplace=True)
+
+# Replacing categorical columns with new binary columns
+# trainingData = pd.get_dummies(trainingData, columns=['Ticket', 'Cabin', 'Embarked'])
+
+
 # Creating an X and Y to pass into NaiveBayes algorithm
-features = trainingData[['PassengerId', 'Sex', 'Age', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']].copy()
-target = trainingData['Survived'].copy()
+features = trainingData.drop("Survived", axis=1)
+target = trainingData[['Survived']]
 
-naiveBayes.fit(features, target)
-naiveBayes.predict(testData)
+# features = features.astype('float32')
 
-# Potential categorization ideas include collapsing age, cabin section, fares
-# Maybe drop Embarked?
-# What is SibSp, Parch, and Pclass
-prediction = pd.DataFrame({"PassengerId":features.PassengerId, "Survived":target})
+print(features.head())
+
+naiveBayes.fit(features, target.values.ravel())
+survPrediction = naiveBayes.predict(testData)
+
+prediction = pd.DataFrame({'PassengerId':testData.PassengerId, 'Survived':survPrediction})
 print(prediction.head())
+
+# What is SibSp, Parch, and Pclass
+
