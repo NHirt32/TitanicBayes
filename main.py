@@ -17,7 +17,7 @@ target = trainingData[['Survived']]
 print(features.head())
 
 naiveBayes = GaussianNB()
-# naiveBayes.fit(features, target.values.ravel())
+naiveBayes.fit(features, target.values.ravel())
 # survPrediction = naiveBayes.predict(testData)
 #
 # prediction = pd.DataFrame({'PassengerId':testData.PassengerId, 'Survived':survPrediction})
@@ -25,4 +25,5 @@ naiveBayes = GaussianNB()
 # Current Questions:
 # What is SibSp, Parch, and Pclass
 # How is Feature Engineering(Categorization) affected by min-max feature scaling?
+# Check test data for NaN
 
