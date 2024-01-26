@@ -3,8 +3,8 @@ from sklearn.preprocessing import LabelEncoder
 
 
 nonNumericColumns = ['Cabin', 'Ticket', 'Embarked', 'Sex']
-missingValueColumns = ['Age', 'Cabin', 'Embarked']
-scalableFeatureList = ['PassengerId', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked', 'Ticket', 'Name']
+missingValueColumns = ['Age', 'Cabin', 'Embarked', 'Name', 'Fare']
+scalableFeatureList = ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked', 'Ticket', 'Name']
 
 def fileRead(trainFile, testFile):
     """
