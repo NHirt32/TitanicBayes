@@ -1,10 +1,13 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
+pd.set_option('display.max_columns', None)
 
 nonNumericColumns = ['Cabin', 'Ticket', 'Embarked', 'Sex']
 missingValueColumns = ['Age', 'Cabin', 'Embarked', 'Name', 'Fare']
-scalableFeatureList = ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked', 'Ticket', 'Name']
+scalableFeatureList = ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked', 'Ticket', 'Name', 'PassengerId']
+testMin = 0
+testMax = 0
 
 def fileRead(trainFile, testFile):
     """
@@ -70,7 +73,8 @@ def scaling(trainingData, testData):
         trainingMin = trainingData[feature].min()
         testMin = testData[feature].min()
         trainingData[feature] = (trainingData[feature] - trainingMin) / (trainingMax - trainingMin)
-        testData[feature] = (testData[feature] - testMin) / (testMax - testMin)
+        if feature != 'PassengerId':
+            testData[feature] = (testData[feature] - testMin) / (testMax - testMin)
     return trainingData, testData
 
 def nameConversion(trainingData, testData):
@@ -100,7 +104,6 @@ def nameConversion(trainingData, testData):
 
 
     return trainingData, testData
-
 
 def dataPreprocessing(trainingFile, testingFile):
     """
