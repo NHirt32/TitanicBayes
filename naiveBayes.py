@@ -1,5 +1,4 @@
 from sklearn.naive_bayes import GaussianNB
-import pandas as pd
 import dataProcessing as dp
 
 naiveBayes = GaussianNB()
