@@ -125,3 +125,31 @@ def dataPreprocessing(trainingFile, testingFile):
     trainingData, testData = impute(trainingData, testData)
     trainingData, testData = scaling(trainingData, testData)
     return trainingData, testData
+
+def predictionCombine(prediction, testData):
+    """
+    This function combines the unused test SurvivorId's and our predicted Survivals into a singular DataFrame
+
+    Args:
+        prediction (DataFrame): Our predicted values for survival
+        testData (DataFrame): The DataFrame of our testing data
+    Returns:
+        DataFrame: Final DataFrame with paired survival prediction and PassengerId
+    """
+    prediction = pd.DataFrame({'PassengerId': testData.PassengerId, 'Survived': prediction})
+    return prediction
+
+def trainingSplit(trainingData, testData):
+    """
+    This function seperates our training and testing datasets to be appropriately used by our model
+
+    Args:
+        trainingData (DataFrame): Our initial unprocessed set of training data
+        testData (DataFrame): Our initial unprocessed set of testing data
+    Returns:
+        tuple (DataFrame, DataFrame, DataFrame): Processed Dataframes ready to be used by our model
+    """
+    features = trainingData.drop({"Survived", "PassengerId"}, axis=1)
+    target = trainingData[['Survived']]
+    noIdPrediction = testData.drop('PassengerId', axis=1)
+    return features, target, noIdPrediction
